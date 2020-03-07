@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>显示全部的学生</title>
+    <script src="/jquery-3.4.1.js"></script>
+    <script>
+        $(function () {
+            $("#btnSearch").click(btnSearchClick)
+        })
+        function btnSearchClick() {
+            let data={filterStr:$("#filterInput").val()}
+            $.ajax({
+                url:"/user/searchUser",
+                method:"post",
+                dataType:"json",
+                data:data,
+                success:function (result) {
+                    console.log("success:"+JSON.stringify(result))
+                    let users=result;
+                    fillDataToTable(document.getElementById("table"),users);
+                },
+                error:function (result) {
+                    alert(result.message)
+                }
+            })
+        }
+        function fillDataToTable(table,users) {
+            console.log(table)
+            console.log(users)
+            //先清空table
+            let len=table.rows.length
+            for(let i=len-1;i>=0;i--)
+            {
+                table.deleteRow(i)
+            }
+            //填充数据
+            for(let i=0;i<users.length;i++)
+            {
+                let r=table.insertRow();
+
+                let id=r.insertCell();
+                id.innerHTML=users[i].id;
+
+                let add_time=r.insertCell();
+                add_time.innerHTML=users[i].add_time;
+
+                let name=r.insertCell();
+                name.innerHTML=users[i].name;
+
+                let age=r.insertCell();
+                age.innerHTML=users[i].age;
+
+                let remark=r.insertCell();
+                remark.innerHTML=users[i].remark;
+
+                table.appendChild(r);
+            }
+        }
+    </script>
+    <style>
+        table,table tr th, table tr td { border:1px solid #0094ff; }
+        table { width: 800px; min-height: 25px; line-height: 25px; text-align: center; border-collapse: collapse;}
+    </style>
+</head>
+<body>
+        <div align="center">
+            <div>
+                <input id="filterInput" placeholder="输入名称或者备注查询"/>
+                <input type="button" value="查询" id="btnSearch"/>
+            </div>
+            <a th:href="@{/user/jumpToAddUser}">添加学生</a>
+        </div>
+        <table align="center" id="table">
+           <thead>
+               <tr>
+                   <td>ID</td>
+                   <td>添加时间</td>
+                   <td>名称</td>
+                   <td>年龄</td>
+                   <td>备注</td>
+                   <td>操作</td>
+               </tr>
+           </thead>
+            <tbody>
+                <tr th:each="user:${users}">
+           <td>[[${user.id}]]</td>
+           <td>[[${user.add_time}]]</td>
+           <td>[[${user.name}]]</td>
+           <td>[[${user.age}]]</td>
+           <td>[[${user.remark}]]</td>
+           <td><a th:href="@{/user/gotoModifyPage(id=${user.id})}">修改</a></td>
+       </tr>
+            </tbody>
+   </table>
+</body>
+</html>

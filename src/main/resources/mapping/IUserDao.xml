@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tony.dao.IUserDao">
+    <select id="getUserById" parameterType="int" resultType="com.tony.entities.User">
+        select * from test.mvctest20200229
+        where id=#{id}
+    </select>
+    <select id="getAllUsers" resultType="com.tony.entities.User">
+        select * from test.mvctest20200229;
+    </select>
+
+    <select id="getUsersByName" parameterType="string" resultType="com.tony.entities.User">
+        select * from test.mvctest20200229 where name like '%${name}%'
+    </select>
+    <select id="getUsersByRemark" parameterType="string" resultType="com.tony.entities.User">
+        select * from test.mvctest20200229 where remark like '%${remark}%'
+    </select>
+    <update id="updateUser" parameterType="com.tony.entities.User">
+        update test.mvctest20200229 set
+        add_time=#{add_time},
+        name=#{name},
+        age=#{age},
+        remark=#{remark}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from test.mvctest20200229
+        where id=#{id}
+    </delete>
+
+    <insert id="addUser" parameterType="com.tony.entities.User">
+        insert into test.mvctest20200229(name,age,remark) values
+        (#{name},#{age},#{remark})
+    </insert>
+</mapper>

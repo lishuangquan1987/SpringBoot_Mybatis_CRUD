@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/jquery-3.4.1.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btn").click(btnClick)
+        })
+        function btnClick() {
+            let user={
+                name:$("#name").val(),
+                age:$("#age").val(),
+                remark:$("#remark").val()
+            }
+            $.ajax({
+                url:"/user/acceptAdd",
+                method:"post",
+                data:user,
+                success:function () {
+                    $(window).attr("location","/user/main")
+                },
+                error:function (result) {
+                    alert(result)
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <table align="center" border="1px solid #0094ff" border-collapse="collapse">
+        <tbody>
+            <tr>
+                <td>名称：</td>
+                <td><input type="text" id="name"/></td>
+            </tr>
+            <tr>
+                <td>年龄：</td>
+                <td><input type="number" id="age"/></td>
+            </tr>
+            <tr>
+                <td>备注：</td>
+                <td><input type="text" id="remark"/></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <br/>
+    <div align="center">
+        <input type="button" id="btn" align="center" value="确定"/>
+    </div>
+</body>
+</html>

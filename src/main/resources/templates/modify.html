@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/jquery-3.4.1.js}"></script>
+    <script>
+        $(function () {
+            $("#btn").click(btnClick)
+        })
+        function btnClick() {
+            console.log("btn点击了")
+            let user={
+                id:$("#id").val(),
+                add_time:$("#add_time").val(),
+                name:$("#name").val(),
+                age:$("#age").val(),
+                remark:$("#remark").val()
+            }
+            $.ajax({
+                url:"/user/acceptModify",
+                type:"post",
+                data:user,
+                success:function(result)
+                {
+                    console.log(result);
+                    $(window).attr("location","/user/main");
+                },
+                error:function (result) {
+                    console.log("出错了"+result);
+                    alert(result)
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+用户ID:
+    <input type="text" th:value="${user.id}" readonly="readonly" id="id"/>
+    <br/>
+添加时间:
+    <input type="text" th:value="${user.add_time}" id="add_time"/>
+    <br/>
+用户名称:
+    <input type="text" th:value="${user.name}"  id="name"/>
+    <br/>
+用户年龄：
+    <input type="text" th:value="${user.age}" id="age"/>
+    <br/>
+用户备注：
+    <input type="text" th:value="${user.remark}" id="remark"/>
+    <br/>
+<input type="button" value="确定" id="btn"/>
+</body>
+</html>
